@@ -181,6 +181,24 @@ Signed-off-by: Your Name <your.email@example.com>
 - Reference related issues in the PR description (not the commit message), e.g. "Fixes #123" — this avoids unintended issue closures during cherry-picks
 - Keep the subject line under 70 characters
 
+### Commit Organization
+
+Before merge, organize your commit history so it tells a clear story:
+
+- **Squash fixup commits** — incremental corrections from review feedback (typo fixes, test tweaks, "address review comment") should be folded into the commit they fix. The final history should not contain the review back-and-forth.
+- **Keep independent logical changes as separate commits** — if a PR contains genuinely distinct steps (e.g. a refactor, then a new feature that builds on it), keep them as separate commits so each can be reviewed independently.
+- Each commit in the final PR should build and pass tests when applied on top of its parent commits.
+
+A good rule of thumb from [Kubernetes contributor guidelines](https://github.com/kubernetes/community/blob/main/contributors/guide/pull-requests.md#squashing): squash "sausage" PRs (incremental fixups), keep "layers" PRs (independent logical changes).
+
+Interactive rebase makes this straightforward:
+
+```bash
+git fetch upstream
+git rebase -i upstream/main
+git push --force-with-lease origin <your-branch>
+```
+
 ## Review and Approval
 
 Each repository has an `OWNERS` file listing approvers and reviewers. PRs require both `/lgtm` and `/approve` from two different OWNERS members before they can be merged.
